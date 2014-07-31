@@ -46,10 +46,15 @@ public class NotificationHelper {
         return penIntentService;
     }
 
-    public static PendingIntent createPendingIntentForNext(int questionID, Context ctx) {
+    public static Intent createIntentForNext(int questionID, Context ctx) {
         Intent intent = new Intent(ctx, NotificationQuizService.class);
         intent.putExtra(Constants.QUESTION, questionID);
         intent.putExtra(Constants.NEXT, true);
+        return intent;
+    }
+
+    public static PendingIntent createPendingIntentForNext(int questionID, Context ctx) {
+        Intent intent = createIntentForNext(questionID, ctx);
         PendingIntent penIntentService = PendingIntent.getService(ctx, 1000, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         return penIntentService;
     }
@@ -92,7 +97,11 @@ public class NotificationHelper {
             }
             rview.setTextViewText(RIDAnswer[i], question.getAnswers()[i]);
             if (selected == i) {
-                rview.setTextColor(RIDAnswer[i], Color.MAGENTA);
+                if (selected == correct) {
+                    rview.setTextColor(RIDAnswer[i], Color.GREEN);
+                } else {
+                    rview.setTextColor(RIDAnswer[i], Color.RED);
+                }
             } else {
                 rview.setTextColor(RIDAnswer[i], color);
             }

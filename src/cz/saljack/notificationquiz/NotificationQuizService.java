@@ -39,6 +39,7 @@ public class NotificationQuizService extends IntentService {
             Question question = QuestionSQLHelper.getRandomQuestion(db);
             NotificationHelper.makeOrUpdateNotification(this, question);
             Log.d(TAG, "ID next question: " + question.getId());
+            db.close();
         } else if (intent.getBooleanExtra(Constants.CLOSE, false)) {
             NotificationManager mng = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             mng.cancel(Constants.NOTIFICATION_ID);
@@ -48,6 +49,7 @@ public class NotificationQuizService extends IntentService {
             SQLiteDatabase db = loadDB();
             Question question = QuestionSQLHelper.getQuestionById(db, id);
             NotificationHelper.makeOrUpdateNotification(this, question, intent.getIntExtra(Constants.ANSWER, 0), question.getCorrect());
+            db.close();
         }
     }
 

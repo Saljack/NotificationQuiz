@@ -1,10 +1,9 @@
 package cz.saljack.notificationquiz;
 
 import android.app.Activity;
-import android.database.Cursor;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import cz.saljack.notificationquiz.model.Question;
 import cz.saljack.notificationquiz.model.QuestionSQLHelper;
@@ -23,12 +22,15 @@ public class NotificationQuiz extends Activity {
         setContentView(R.layout.main);
         reloadQuestion(null);
 //        NotificationHelper.makeOrUpdateNotification(this, NotificationHelper.loadXMLQuestions(this).get(0));
+        Intent intent = NotificationHelper.createIntentForNext(0, this);
+        startService(intent);
         
 
     }
 
     public void makeNotification(View view) {
-        NotificationHelper.makeOrUpdateNotification(this, NotificationHelper.loadXMLQuestions(this).get(0));
+        Intent intent = NotificationHelper.createIntentForNext(0, this);
+        startService(intent);
 
     }
 
