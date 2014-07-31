@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+>
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    >
+        <TextView
+            android:id="@+id/question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/close"
+            android:layout_alignParentLeft="true"
+            android:text=""
+        />
+        <ImageView
+            android:id="@id/close"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_menu_close_clear_cancel"
+        />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    >
+        <Button
+            android:id="@+id/answerA"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/imgA"
+            android:layout_alignParentLeft="true"
+            android:text="a)"
+            android:gravity="left|center_vertical"
+            style="?android:attr/borderlessButtonStyle"
+
+        />
+        <ImageView
+            android:id="@id/imgA"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="invisible"
+            android:src="@drawable/btn_check_buttonless_on"
+        />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    >
+        <Button
+            android:id="@+id/answerB"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/imgB"
+            android:layout_alignParentLeft="true"
+            android:text="a)"
+            android:gravity="left|center_vertical"
+            style="?android:attr/borderlessButtonStyle"
+
+        />
+        <ImageView
+            android:id="@id/imgB"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="invisible"
+            android:src="@drawable/btn_check_buttonless_on"
+        />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+    >
+        <Button
+            android:id="@+id/answerC"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/imgC"
+            android:layout_alignParentLeft="true"
+            android:text="a)"
+            android:gravity="left|center_vertical"
+            style="?android:attr/borderlessButtonStyle"
+
+        />
+        <ImageView
+            android:id="@id/imgC"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="invisible"
+            android:src="@drawable/btn_check_buttonless_on"
+        />
+    </RelativeLayout>
+    
+
+    
+    <Button
+        android:id="@+id/next"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|center_vertical"
+        android:text="@string/next"
+        android:visibility="gone"
+    />
+
+</LinearLayout>

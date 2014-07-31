@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Notification Quiz</string>
+    <string name="show_notification">Show notfication quiz</string>
+    <string name="next">Next</string>
+    <string name="reload_question">Reload question</string>
+</resources>
