@@ -66,6 +66,10 @@ public class NotificationHelper {
         return penIntentService;
     }
 
+    public static PendingIntent createDummyIntent(Context ctx) {
+        return PendingIntent.getBroadcast(ctx, 11111, new Intent(ctx, DUMMY.class), PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
     public static void makeOrUpdateNotification(Context ctx, Question question) {
         makeOrUpdateNotification(ctx, question, -1, -1);
     }
@@ -94,6 +98,9 @@ public class NotificationHelper {
             if (selected == -1) {
                 PendingIntent penIntentService = createPendingIntentForAnswer(question.getId(), AnswerEnum.values[i], ctx);
                 rview.setOnClickPendingIntent(RIDAnswer[i], penIntentService);
+            } else {
+                PendingIntent pi = createDummyIntent(ctx);
+                rview.setOnClickPendingIntent(RIDAnswer[i], pi);
             }
             rview.setTextViewText(RIDAnswer[i], question.getAnswers()[i]);
             if (selected == i) {
@@ -125,16 +132,6 @@ public class NotificationHelper {
         return rview;
     }
 
-//    public static List<Question> db() {
-//        List<Question> questions = new ArrayList<Question>(2);
-//        Question q = new Question(0, "Kdo tohle naprogramoval?", new String[]{"Tomas Poledny", "Franta Hruska", "Petr Vocasek"}, 0);
-//        questions.add(q);
-//
-//        q = new Question(1, "Aplikace bezi na?", new String[]{"Windows", "Android", "iOS"}, 1);
-//        questions.add(q);
-//
-//        return questions;
-//    }
     public static List<Question> loadXMLQuestions(Context ctx) {
         List<Question> questions = new ArrayList<Question>();
 
@@ -208,4 +205,6 @@ public class NotificationHelper {
         }
         return questions;
     }
+
+
 }
