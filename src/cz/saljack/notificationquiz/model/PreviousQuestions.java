@@ -62,7 +62,15 @@ public class PreviousQuestions implements Parcelable {
 
     @Override
     public String toString() {
-        Log.d(TAG, previous.toString());
-        return previous.toString();
+//        Log.d(TAG, previous.toString());
+        String ret;
+        if (previous.size() > 0) {
+            ret = previous.toString();
+            ret = "(" + ret.subSequence(1, ret.length() - 2) + ")";
+        }else{
+            ret = "()";
+        }
+        return ret;
     }
+
 }

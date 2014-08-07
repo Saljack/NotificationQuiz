@@ -50,23 +50,29 @@ public class QuizIntentBuilder {
         return new QuizIntentBuilder(context, DUMMY.class);
     }
 
-    public static QuizIntentBuilder BuilderIntentForAnswer(int questionID, AnswerEnum answer, Context ctx) {
+    public static QuizIntentBuilder BuilderIntentForAnswer(int questionID, AnswerEnum answer, PreviousQuestions previousQuestions, Context ctx) {
         QuizIntentBuilder builder = Builder(ctx).setQuestion(questionID).setAnswer(answer);
+        if (previousQuestions != null) {
+            builder.setPreviousID(previousQuestions);
+        }
         return builder;
     }
 
-    public static QuizIntentBuilder BuilderIntentForNext(int questionID, Context ctx) {
+    public static QuizIntentBuilder BuilderIntentForNext(int questionID, PreviousQuestions previousQuestions, Context ctx) {
         QuizIntentBuilder builder = Builder(ctx).setQuestion(questionID).makeNext();
+        if (previousQuestions != null) {
+            builder.setPreviousID(previousQuestions);
+        }
         return builder;
     }
 
-    public static PendingIntent createPendingIntentForAnswer(int questionID, AnswerEnum answer, Context ctx) {
-        QuizIntentBuilder builder = BuilderIntentForAnswer(questionID, answer, ctx);
+    public static PendingIntent createPendingIntentForAnswer(int questionID, AnswerEnum answer, PreviousQuestions previousQuestions, Context ctx) {
+        QuizIntentBuilder builder = BuilderIntentForAnswer(questionID, answer, previousQuestions, ctx);
         return builder.buildPendingIntent();
     }
 
-    public static PendingIntent createPendingIntentForNext(int questionID, Context ctx) {
-        QuizIntentBuilder builder = BuilderIntentForNext(questionID, ctx);
+    public static PendingIntent createPendingIntentForNext(int questionID, PreviousQuestions previousQuestions, Context ctx) {
+        QuizIntentBuilder builder = BuilderIntentForNext(questionID, previousQuestions, ctx);
         return builder.buildPendingIntent();
     }
 
