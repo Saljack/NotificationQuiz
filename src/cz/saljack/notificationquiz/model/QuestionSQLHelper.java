@@ -7,6 +7,7 @@ package cz.saljack.notificationquiz.model;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -46,6 +47,8 @@ public class QuestionSQLHelper extends SQLiteOpenHelper {
 
     public static final String SELECT_BY_ID
             = COLUMN_ID + " = ?";
+    
+    public static final String SELECT_NOT_ID_IN_ARRAY = COLUMN_ID + " NOT IN ?";
 
     public QuestionSQLHelper(Context ctx) {
         super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
@@ -76,5 +79,11 @@ public class QuestionSQLHelper extends SQLiteOpenHelper {
         Cursor q = db.query(TABLE_NAME, null, null, null, null, null, "RANDOM()", "1");
         q.moveToFirst();
         return new Question(q);
+    }
+    
+    public static long getCount(SQLiteDatabase db){
+//        Cursor c = db.query(TABLE_NAME, null, "COUNT(*)", projection, COLUMN_ID, COLUMN_ID, COLUMN_ID)
+        long ret = DatabaseUtils.queryNumEntries(db, TABLE_NAME);
+        return ret;
     }
 }

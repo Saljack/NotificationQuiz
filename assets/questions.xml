@@ -7,30 +7,208 @@ and open the template in the editor.
 
 
 <questions>
-    <question>
-        <text>Jak je naceno toto XML?</text>
-        <answers>
-            <answer correct="true">XMLPullParser</answer>
-            <answer>SAX</answer>
-            <answer>DOM</answer>
-        </answers>
-    </question>
     
     <question>
         <text>Kdo je prezident?</text>
         <answers>
-            <answer>Klaus</answer>
-            <answer>Nemecek</answer>
-            <answer correct="true">Zeman</answer>
+            <answer>Václav Klaus</answer>
+            <answer>Svatopluk Němeček</answer>
+            <answer correct="true">Miloš Zeman</answer>
         </answers>
+        <category>actual</category>
+        <level>0</level>
+        <language>cz</language>
     </question>
     
     <question>
-        <text>Prvni ceskoslovensky prezident?</text>
+        <text>První Československý prezident?</text>
         <answers>
             <answer>Benes</answer>
             <answer correct="true">Masaryk</answer>
             <answer>Klaus</answer>
         </answers>
     </question>
+    
+    <question>
+        <text>Hlavní město Lotyšska?</text>
+        <answers>
+            <answer>Talin</answer>
+            <answer correct="true">Riga</answer>
+            <answer>Vilnius</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>První český prezident?</text>
+        <answers>
+            <answer>Václav Klaus</answer>
+            <answer correct="true">Václav Havel</answer>
+            <answer>Gustav Husák</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>Kdo napsal Ferdu mravence?</text>
+        <answers>
+            <answer>Václav Čtvrtek</answer>
+            <answer>Ondřej Sekora</answer>
+            <answer correct="true">Radek Pilař</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>Kdo je autor Dášenky?</text>
+        <answers>
+            <answer>Karel Čapek</answer>
+            <answer>Václav Čapek</answer>
+            <answer correct="true">Josef Čapek</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>Kde vyráběla značka Mora?</text>
+        <answers>
+            <answer>Martin</answer>
+            <answer>Trenčín</answer>
+            <answer correct="true">Zlaté Moravce</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>Počet stanic metra linky A?</text>
+        <answers>
+            <answer>12</answer>
+            <answer correct="true">13</answer>
+            <answer>14</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>Android verze 4.4 je?</text>
+        <answers>
+            <answer>Ice Cream Sandwich</answer>
+            <answer>Jealy Beank</answer>
+            <answer correct="true">Kit Kat</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>Komu patříl klobouk Boba a Bobka?</text>
+        <answers>
+            <answer>Staré bábě</answer>
+            <answer correct="true">Čarodějovi Fokustónovi</answer>
+            <answer>Ferdovi mravencovi</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>Kdo je vyobrazen na 500Kč?</text>
+        <answers>
+            <answer>Ema Destinová</answer>
+            <answer correct="true">Božena Němcová</answer>
+            <answer>František Palacký</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>Kdo je vyobrazen na 1000Kč?</text>
+        <answers>
+            <answer>T. G. Masaryk</answer>
+            <answer>Karel IV.</answer>
+            <answer correct="true">František Palacký</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>Kdo je vyobrazen na 100Kč?</text>
+        <answers>
+            <answer correct="true">Karel IV.</answer>
+            <answer>T. G. Masaryk</answer>
+            <answer>Jan Amos Komenský</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>Kdo je vyobrazen na 200Kč?</text>
+        <answers>
+            <answer>Karel IV.</answer>
+            <answer>Božena Němcová</answer>
+            <answer  correct="true">Jan Amos Komenský</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>Kdo založil České Budějovice?</text>
+        <answers>
+            <answer>Karel IV.</answer>
+            <answer>Václav II.</answer>
+            <answer  correct="true">Přemysl Otakar II.</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>Komu se říkalo Král železný a zlatý?</text>
+        <answers>
+            <answer  correct="true">Přemysl Otakar II.</answer>
+            <answer>Jan Lucemburský</answer>
+            <answer>Václav IV.</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>Kolik žen měl Karel IV.?</text>
+        <answers>
+            <answer>2</answer>
+            <answer>3</answer>
+            <answer  correct="true">4</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>V jakém roce proběhla bitva U Slavkova?</text>
+        <answers>
+            <answer>1704</answer>
+            <answer  correct="true">1805</answer>
+            <answer>1825</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>Jaká je chemická značka železa?</text>
+        <answers>
+            <answer>Ze</answer>
+            <answer>Cu</answer>
+            <answer  correct="true">Fe</answer>
+        </answers>
+    </question>
+    
+    
+    <question>
+        <text>Kdo vynalezl žárovku?</text>
+        <answers>
+            <answer>František Křižík</answer>
+            <answer>Albert Einstein</answer>
+            <answer  correct="true">Thomas Alva Edison</answer>
+        </answers>
+    </question>
+    
+    <question>
+        <text>Kdo vynalezl telefon?</text>
+        <answers>
+            <answer>Thomas Alva Edison</answer>
+            <answer>Isac Newton</answer>
+            <answer  correct="true">Graham Bell</answer>
+        </answers>
+    </question>
+        
+    <question>
+        <text>Která země nepatří do Commonwealth?</text>
+        <answers>
+            <answer>Nový Zéland</answer>
+            <answer>Kanada</answer>
+            <answer  correct="true">Grónsko</answer>
+        </answers>
+    </question>
+    
+    <!--Halogeny, Vzácné plyny, Hande Hoch, ohmuv zákon, pikometr-->
 </questions>

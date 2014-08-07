@@ -6,10 +6,20 @@
 
 package cz.saljack.notificationquiz.model;
 
+import java.io.Closeable;
+
 /**
  *
  * @author saljack
  */
-public interface DB {
+public interface DB extends Closeable{
     public void insert(Question question);
+    
+    public Question getQuestionById(int id);
+    
+    public Question getRandomQuestion();
+    
+    public void clearAll();
+    
+    public int count();
 }

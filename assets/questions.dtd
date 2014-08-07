@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/questions.dtd
+
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE questions SYSTEM "questions.dtd">
+
+    <questions>
+    ...
+    </questions>
+-->
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT questions (question)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT question (language|level|category|answers|text)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT text (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT answers (answer)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT answer (#PCDATA)>
+<!ATTLIST answer
+    correct CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT category (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT level (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT language (#PCDATA)>

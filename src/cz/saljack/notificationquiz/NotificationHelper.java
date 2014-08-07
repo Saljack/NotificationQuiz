@@ -11,19 +11,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import static android.content.Context.NOTIFICATION_SERVICE;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 import cz.saljack.notificationquiz.model.Question;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 /**
  *
@@ -32,43 +23,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 public class NotificationHelper {
 
     private static final String TAG = "NotificationHelper";
-
-    public static Intent createIntentForAnswer(int questionID, AnswerEnum answer, Context ctx) {
-        Intent intentService = new Intent(ctx, NotificationQuizService.class);
-        intentService = intentService.putExtra(Constants.ANSWER, answer.getID());
-        intentService = intentService.putExtra(Constants.QUESTION, questionID);
-        return intentService;
-    }
-
-    public static PendingIntent createPendingIntentForAnswer(int questionID, AnswerEnum answer, Context ctx) {
-        Intent intent = createIntentForAnswer(questionID, answer, ctx);
-        PendingIntent penIntentService = PendingIntent.getService(ctx, answer.getID(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return penIntentService;
-    }
-
-    public static Intent createIntentForNext(int questionID, Context ctx) {
-        Intent intent = new Intent(ctx, NotificationQuizService.class);
-        intent.putExtra(Constants.QUESTION, questionID);
-        intent.putExtra(Constants.NEXT, true);
-        return intent;
-    }
-
-    public static PendingIntent createPendingIntentForNext(int questionID, Context ctx) {
-        Intent intent = createIntentForNext(questionID, ctx);
-        PendingIntent penIntentService = PendingIntent.getService(ctx, 1000, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return penIntentService;
-    }
-
-    public static PendingIntent createPendingIntentForClose(Context ctx) {
-        Intent intent = new Intent(ctx, NotificationQuizService.class);
-        intent.putExtra(Constants.CLOSE, true);
-        PendingIntent penIntentService = PendingIntent.getService(ctx, 1001, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return penIntentService;
-    }
-
-    public static PendingIntent createDummyIntent(Context ctx) {
-        return PendingIntent.getBroadcast(ctx, 11111, new Intent(ctx, DUMMY.class), PendingIntent.FLAG_UPDATE_CURRENT);
-    }
 
     public static void makeOrUpdateNotification(Context ctx, Question question) {
         makeOrUpdateNotification(ctx, question, -1, -1);
@@ -96,10 +50,10 @@ public class NotificationHelper {
 
         for (int i = 0; i < RIDAnswer.length; i++) {
             if (selected == -1) {
-                PendingIntent penIntentService = createPendingIntentForAnswer(question.getId(), AnswerEnum.values[i], ctx);
+                PendingIntent penIntentService = QuizIntentBuilder.createPendingIntentForAnswer(question.getId(), AnswerEnum.values[i], ctx);
                 rview.setOnClickPendingIntent(RIDAnswer[i], penIntentService);
             } else {
-                PendingIntent pi = createDummyIntent(ctx);
+                PendingIntent pi = QuizIntentBuilder.createPendingIntentForDummy(ctx);
                 rview.setOnClickPendingIntent(RIDAnswer[i], pi);
             }
             rview.setTextViewText(RIDAnswer[i], question.getAnswers()[i]);
@@ -122,89 +76,13 @@ public class NotificationHelper {
 
         if (selected >= 0) {
             rview.setViewVisibility(R.id.next, View.VISIBLE);
-            rview.setOnClickPendingIntent(R.id.next, createPendingIntentForNext(question.getId(), ctx));
+            rview.setOnClickPendingIntent(R.id.next, QuizIntentBuilder.createPendingIntentForNext(question.getId(), ctx));
         } else {
             rview.setViewVisibility(R.id.next, View.GONE);
         }
 
-        rview.setOnClickPendingIntent(R.id.close, createPendingIntentForClose(ctx));
+        rview.setOnClickPendingIntent(R.id.close, QuizIntentBuilder.createPendingIntentForClose(ctx));
 
         return rview;
     }
-
-    public static List<Question> loadXMLQuestions(Context ctx) {
-        List<Question> questions = new ArrayList<Question>();
-
-        AssetManager assets = ctx.getAssets();
-
-        try {
-            InputStream open = assets.open("questions.xml");
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-            XmlPullParser parser = factory.newPullParser();
-            parser.setInput(open, "UTF-8");
-            int eventType = parser.getEventType();
-
-            Question question = null;
-            int ID = 0;
-
-            int answerID = 0;
-
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                if (eventType == XmlPullParser.START_TAG) {
-                    String name = parser.getName();
-                    if (name.equals("question")) {
-                        question = new Question();
-                        question.setId(ID);
-                        ++ID;
-                    } else if (name.equals("text")) {
-                        eventType = parser.next();
-                        if (eventType == XmlPullParser.TEXT) {
-                            question.setQuestion(parser.getText());
-                        } else {
-                            Log.d(TAG, "Text question not found");
-                        }
-                    } else if (name.equals("answers")) {
-                        question.setAnswers(new String[3]);
-                        answerID = 0;
-                    } else if (name.equals("answer")) {
-                        if (parser.getAttributeCount() > 0) {
-                            if (parser.getAttributeName(0).equals("correct")) {
-                                if (parser.getAttributeValue(0).equals("true")) {
-                                    question.setCorrect(answerID);
-                                }
-                            }
-                        }
-                        eventType = parser.next();
-                        if (eventType == XmlPullParser.TEXT) {
-                            question.getAnswers()[answerID] = parser.getText();
-                        } else {
-                            Log.d(TAG, "Text answer not found");
-                        }
-                    }
-
-                }
-
-                if (eventType == XmlPullParser.END_TAG) {
-                    String name = parser.getName();
-                    if (name.equals("question")) {
-                        //TODO validate question
-                        questions.add(question);
-                    } else if (name.equals("answer")) {
-                        ++answerID;
-                    }
-                }
-
-                eventType = parser.next();
-
-            }
-        } catch (IOException ex) {
-            Log.d(TAG, "XML Questions was not loaded.");
-        } catch (XmlPullParserException ex) {
-            Log.d(TAG, ex.toString());
-
-        }
-        return questions;
-    }
-
-
 }

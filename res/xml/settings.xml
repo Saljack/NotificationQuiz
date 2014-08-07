@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="show_correct"
+        android:title="@string/show_correct_title"
+        android:summary="@string/show_correct_summary"
+        android:defaultValue="true" />
+</PreferenceScreen>

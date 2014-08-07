@@ -25,9 +25,9 @@ import org.xmlpull.v1.XmlPullParserFactory;
 public class XMLLoaderHelper {
 
     private static final String TAG = "XMLLoaderHelper";
-    
+
     private static final String FILENAME = "questions.xml";
-    
+
     /**
      * XML TAGS
      */
@@ -40,6 +40,16 @@ public class XMLLoaderHelper {
     private static final String TRUE_VALUE = "true";
 
     public static void loadXMLQuestions(Context ctx, DB db) {
+        loadXMLQuestions(ctx, db, null);
+    }
+
+    /**
+     * 
+     * @param ctx context
+     * @param db database
+     * @param listener can be null
+     */
+    public static void loadXMLQuestions(Context ctx, DB db, QuestionLoadedListener listener) {
         List<Question> questions = new ArrayList<Question>();
         InputStream open = null;
         try {
@@ -48,6 +58,9 @@ public class XMLLoaderHelper {
             Question question = xmlParseQuestion(parser);
             while (question != null) {
                 db.insert(question);
+                if (listener != null) {
+                    listener.onQuestionLoadedLister(1);
+                }
                 question = xmlParseQuestion(parser);
             }
 
@@ -85,7 +98,7 @@ public class XMLLoaderHelper {
         return parser;
     }
 
-    public static Question xmlParseQuestion(XmlPullParser parser) throws XmlPullParserException, IOException {
+    private static Question xmlParseQuestion(XmlPullParser parser) throws XmlPullParserException, IOException {
         int eventType = parser.getEventType();
 
         Question question = null;
