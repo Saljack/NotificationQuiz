@@ -51,8 +51,8 @@ and open the template in the editor.
         <text>Kdo napsal Ferdu mravence?</text>
         <answers>
             <answer>Václav Čtvrtek</answer>
-            <answer>Ondřej Sekora</answer>
-            <answer correct="true">Radek Pilař</answer>
+            <answer correct="true">Ondřej Sekora</answer>
+            <answer>Radek Pilař</answer>
         </answers>
     </question>
     
@@ -96,7 +96,7 @@ and open the template in the editor.
         <text>Komu patříl klobouk Boba a Bobka?</text>
         <answers>
             <answer>Staré bábě</answer>
-            <answer correct="true">Čarodějovi Fokustónovi</answer>
+            <answer correct="true">Fokustónovi</answer>
             <answer>Ferdovi mravencovi</answer>
         </answers>
     </question>

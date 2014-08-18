@@ -19,6 +19,8 @@ public interface DB extends Closeable{
     
     public Question getRandomQuestion();
     
+    public Question getRandomQuestionWithouPrevious(PreviousQuestions previousQuestions);
+    
     public void clearAll();
     
     public int count();

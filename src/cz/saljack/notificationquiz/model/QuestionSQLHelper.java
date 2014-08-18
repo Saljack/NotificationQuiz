@@ -10,12 +10,15 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  *
  * @author saljack
  */
 public class QuestionSQLHelper extends SQLiteOpenHelper {
+
+    public static final String TAG = "SQLiteOpenHelper";
 
     public static final String DATABASE_NAME = "questionsDB";
     public static final int DATABASE_VERSION = 1;
@@ -47,8 +50,8 @@ public class QuestionSQLHelper extends SQLiteOpenHelper {
 
     public static final String SELECT_BY_ID
             = COLUMN_ID + " = ?";
-    
-    public static final String SELECT_NOT_ID_IN_ARRAY = COLUMN_ID + " NOT IN ?";
+
+    public static final String SELECT_NOT_ID_IN_ARRAY = COLUMN_ID + " NOT IN ";
 
     public QuestionSQLHelper(Context ctx) {
         super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
@@ -80,8 +83,20 @@ public class QuestionSQLHelper extends SQLiteOpenHelper {
         q.moveToFirst();
         return new Question(q);
     }
-    
-    public static long getCount(SQLiteDatabase db){
+
+    public static Question getRandomQuestionWithoutPrevious(SQLiteDatabase db, PreviousQuestions previousQuestions) {
+
+        Log.d(TAG, previousQuestions.toString());
+        if (previousQuestions.getPrevious().size() > 0) {
+            String[] args = new String[]{previousQuestions.toString()};
+            Cursor q = db.query(TABLE_NAME, null, SELECT_NOT_ID_IN_ARRAY+previousQuestions.toString(), null, null, null, "RANDOM()", "1");
+            q.moveToFirst();
+            return new Question(q);
+        }
+        return getRandomQuestion(db);
+    }
+
+    public static long getCount(SQLiteDatabase db) {
 //        Cursor c = db.query(TABLE_NAME, null, "COUNT(*)", projection, COLUMN_ID, COLUMN_ID, COLUMN_ID)
         long ret = DatabaseUtils.queryNumEntries(db, TABLE_NAME);
         return ret;

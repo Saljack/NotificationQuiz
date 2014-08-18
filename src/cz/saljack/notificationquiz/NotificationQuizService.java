@@ -58,7 +58,8 @@ public class NotificationQuizService extends IntentService {
                         prev.add(msg.questionID);
                     }
 
-                    Question question = db.getRandomQuestion();
+//                    Question question = db.getRandomQuestion();
+                    Question question = db.getRandomQuestionWithouPrevious(prev);
 
                     if (PreferencesDB.isNotificationVisible(this)) {
                         nextNotificationQuestion(question, prev);

@@ -55,6 +55,10 @@ public class DBList implements DB {
     public int count() {
         return questions.size();
     }
+
+    public Question getRandomQuestionWithouPrevious(PreviousQuestions previousQuestions) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 

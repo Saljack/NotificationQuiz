@@ -54,5 +54,8 @@ public class DBSql implements DB {
         return (int) QuestionSQLHelper.getCount(db);
     }
 
-    
+    public Question getRandomQuestionWithouPrevious(PreviousQuestions previousQuestions) {
+        return QuestionSQLHelper.getRandomQuestionWithoutPrevious(db, previousQuestions);
+    }
+
 }

@@ -7,7 +7,6 @@ package cz.saljack.notificationquiz.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class PreviousQuestions implements Parcelable {
 
     public static final String TAG = "PreviousQuestions";
 
-    public static final int MAX_PREVIOUS_SIZE = 20;
+    public static int MAX_PREVIOUS_SIZE = 20;
 
     private final LinkedList<Integer> previous;
 
@@ -66,7 +65,7 @@ public class PreviousQuestions implements Parcelable {
         String ret;
         if (previous.size() > 0) {
             ret = previous.toString();
-            ret = "(" + ret.subSequence(1, ret.length() - 2) + ")";
+            ret = "(" + ret.subSequence(1, ret.length() - 1) + ")";
         }else{
             ret = "()";
         }

@@ -20,6 +20,14 @@ public class Question {
     private String[] answers;
 
     private int correct;
+    
+    private int level;
+    
+    private String language;
+    
+    //TODO category
+    
+    
 
     public Question() {
     }
