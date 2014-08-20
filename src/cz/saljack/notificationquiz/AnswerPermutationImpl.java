@@ -18,7 +18,11 @@ public class AnswerPermutationImpl implements AnswerPermutation {
     public int[] getRandomPermutation() {
         Random rnd = new Random();
         int nextInt = rnd.nextInt(permutation.length);
-        return permutation[nextInt];
+        return getRandomPermutation(nextInt);
+    }
+
+    public int[] getRandomPermutation(int idPermutation) {
+        return permutation[idPermutation % permutation.length];
     }
 
 }

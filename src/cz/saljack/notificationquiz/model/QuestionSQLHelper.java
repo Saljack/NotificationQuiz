@@ -18,7 +18,7 @@ import android.util.Log;
  */
 public class QuestionSQLHelper extends SQLiteOpenHelper {
 
-    public static final String TAG = "SQLiteOpenHelper";
+    public static final String TAG = "QuestionSQLHelper";
 
     public static final String DATABASE_NAME = "questionsDB";
     public static final int DATABASE_VERSION = 1;
@@ -85,8 +85,6 @@ public class QuestionSQLHelper extends SQLiteOpenHelper {
     }
 
     public static Question getRandomQuestionWithoutPrevious(SQLiteDatabase db, PreviousQuestions previousQuestions) {
-
-        Log.d(TAG, previousQuestions.toString());
         if (previousQuestions.getPrevious().size() > 0) {
             String[] args = new String[]{previousQuestions.toString()};
             Cursor q = db.query(TABLE_NAME, null, SELECT_NOT_ID_IN_ARRAY+previousQuestions.toString(), null, null, null, "RANDOM()", "1");

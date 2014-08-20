@@ -25,11 +25,14 @@ public class NotificationHelper {
 
     private static final String TAG = "NotificationHelper";
 
-    public static void makeOrUpdateNotification(Context ctx, Question question, PreviousQuestions previousQuestions) {
+    public static void makeOrUpdateNotification(Context ctx, Question question,
+                                                PreviousQuestions previousQuestions) {
         makeOrUpdateNotification(ctx, question, -1, -1, previousQuestions);
     }
 
-    public static void makeOrUpdateNotification(Context ctx, Question question, int selected, int correct, PreviousQuestions previousQuestions) {
+    public static void makeOrUpdateNotification(Context ctx, Question question,
+                                                int selected, int correct,
+                                                PreviousQuestions previousQuestions) {
         RemoteViews rview = makeRemoteViews(ctx, question, selected, correct, previousQuestions);
         Notification.Builder notBuilder = new Notification.Builder(ctx).setContent(rview).setSmallIcon(R.drawable.ic_launcher);
         Notification not = notBuilder.build();
@@ -40,7 +43,9 @@ public class NotificationHelper {
         mng.notify(Constants.NOTIFICATION_ID, not);
     }
 
-    public static RemoteViews makeRemoteViews(Context ctx, Question question, int selected, int correct, PreviousQuestions previousQuestions) {
+    public static RemoteViews makeRemoteViews(Context ctx, Question question,
+                                              int selected, int correct,
+                                              PreviousQuestions previousQuestions) {
         RemoteViews rview = new RemoteViews(ctx.getPackageName(), R.layout.notification_layout);
         rview.setTextViewText(R.id.question, question.getQuestion());
 
@@ -50,15 +55,21 @@ public class NotificationHelper {
         int color = ctx.getResources().getColor(android.R.color.primary_text_dark);
 
         for (int i = 0; i < RIDAnswer.length; i++) {
+            final int p = question.getPermutation()[i];
             if (selected == -1) {
-                PendingIntent penIntentService = QuizIntentBuilder.createPendingIntentForAnswer(question.getId(), AnswerEnum.values[i], previousQuestions, ctx);
+                PendingIntent penIntentService = QuizIntentBuilder.createPendingIntentForAnswer(
+                        question.getId(), 
+                        AnswerEnum.values[p], 
+                        previousQuestions, 
+                        question.getPermutation(), 
+                        ctx);
                 rview.setOnClickPendingIntent(RIDAnswer[i], penIntentService);
             } else {
                 PendingIntent pi = QuizIntentBuilder.createPendingIntentForDummy(ctx);
                 rview.setOnClickPendingIntent(RIDAnswer[i], pi);
             }
-            rview.setTextViewText(RIDAnswer[i], question.getAnswers()[i]);
-            if (selected == i) {
+            rview.setTextViewText(RIDAnswer[i], question.getAnswers()[p]);
+            if (selected == p) {
                 if (selected == correct) {
                     rview.setTextColor(RIDAnswer[i], Color.GREEN);
                 } else {
@@ -68,7 +79,7 @@ public class NotificationHelper {
                 rview.setTextColor(RIDAnswer[i], color);
             }
 
-            if (correct == i) {
+            if (correct == p) {
                 rview.setViewVisibility(RIDImg[i], View.VISIBLE);
             } else {
                 rview.setViewVisibility(RIDImg[i], View.INVISIBLE);

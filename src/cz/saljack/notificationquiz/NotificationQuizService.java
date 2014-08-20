@@ -39,27 +39,27 @@ public class NotificationQuizService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        QuestionIntent msg = new QuestionIntent(intent);
+        QuestionIntent questionIntent = new QuestionIntent(intent);
         try {
 
-            switch (msg.type) {
+            switch (questionIntent.type) {
                 case NEXT:
                     DB db = new DBSql(this, true);
 
                     PreviousQuestions prev;
-                    if (msg.previous == null) {
+                    if (questionIntent.previous == null) {
                         prev = new PreviousQuestions();
                     } else {
-                        prev = msg.previous;
-                        Log.d(TAG, prev.toString());
+                        prev = questionIntent.previous;
                     }
 
-                    if (msg.questionID != -1) {
-                        prev.add(msg.questionID);
+                    if (questionIntent.questionID != -1) {
+                        prev.add(questionIntent.questionID);
                     }
 
 //                    Question question = db.getRandomQuestion();
                     Question question = db.getRandomQuestionWithouPrevious(prev);
+                    question.makePermutation();
 
                     if (PreferencesDB.isNotificationVisible(this)) {
                         nextNotificationQuestion(question, prev);
@@ -75,19 +75,20 @@ public class NotificationQuizService extends IntentService {
                     break;
                 case ANSWER:
                     DB dba = new DBSql(this, true);
-                    Question questiona = dba.getQuestionById(msg.questionID);
+                    Question questiona = dba.getQuestionById(questionIntent.questionID);
 
+                    questiona.setPermutation(questionIntent.permutation);
                     PreviousQuestions preva;
-                    if (msg.previous == null) {
+                    if (questionIntent.previous == null) {
                         preva = new PreviousQuestions();
                     } else {
-                        preva = msg.previous;
+                        preva = questionIntent.previous;
                     }
 
                     if (PreferencesDB.isNotificationVisible(this)) {
-                        answerEvaluationNotification(questiona, msg.answer, preva);
+                        answerEvaluationNotification(questiona, questionIntent.answer, preva);
                     }
-                    answerEvaluationWidgets(questiona, msg.answer, preva);
+                    answerEvaluationWidgets(questiona, questionIntent.answer, preva);
 
                     dba.close();
                     break;
@@ -99,19 +100,23 @@ public class NotificationQuizService extends IntentService {
         }
     }
 
-    public void nextNotificationQuestion(Question question, PreviousQuestions prev) throws IOException {
+    public void nextNotificationQuestion(Question question,
+                                         PreviousQuestions prev) throws IOException {
         NotificationHelper.makeOrUpdateNotification(this, question, prev);
     }
 
-    public void answerEvaluationNotification(Question question, int answer, PreviousQuestions previousQuestions) throws IOException {
+    public void answerEvaluationNotification(Question question, int answer,
+                                             PreviousQuestions previousQuestions) throws IOException {
         NotificationHelper.makeOrUpdateNotification(this, question, answer, question.getCorrect(), previousQuestions);
     }
 
-    public void answerEvaluationWidgets(Question question, int answer, PreviousQuestions previousQuestions) throws IOException {
+    public void answerEvaluationWidgets(Question question, int answer,
+                                        PreviousQuestions previousQuestions) throws IOException {
         loadWidgets(question, answer, question.getCorrect(), previousQuestions);
     }
 
-    public void loadWidgets(Question question, int selected, int correct, PreviousQuestions previousQuestions) {
+    public void loadWidgets(Question question, int selected, int correct,
+                            PreviousQuestions previousQuestions) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
         ComponentName name = new ComponentName(this, WidgetProvider.class);
@@ -120,7 +125,10 @@ public class NotificationQuizService extends IntentService {
         appWidgetManager.updateAppWidget(name, remoteView);
     }
 
-    public static RemoteViews makeRemoteViewsForWidget(Context ctx, Question question, int selected, int correct, PreviousQuestions previousQuestions) {
+    public static RemoteViews makeRemoteViewsForWidget(Context ctx,
+                                                       Question question,
+                                                       int selected, int correct,
+                                                       PreviousQuestions previousQuestions) {
 
         RemoteViews rview = new RemoteViews(ctx.getPackageName(), R.layout.widget_layout);
         rview.setTextViewText(R.id.questionW, question.getQuestion());
@@ -131,15 +139,23 @@ public class NotificationQuizService extends IntentService {
         int color = ctx.getResources().getColor(android.R.color.primary_text_dark);
 
         for (int i = 0; i < RIDAnswer.length; i++) {
+            final int p = question.getPermutation()[i];
             if (selected == -1) {
-                PendingIntent penIntentService = QuizIntentBuilder.createPendingIntentForAnswer(question.getId(), AnswerEnum.values[i], previousQuestions, ctx);
+                PendingIntent penIntentService = QuizIntentBuilder.createPendingIntentForAnswer(
+                        question.getId(),
+                        AnswerEnum.values[p],
+                        previousQuestions,
+                        question.getPermutation(),
+                        ctx
+                );
+
                 rview.setOnClickPendingIntent(RIDAnswer[i], penIntentService);
             } else {
                 PendingIntent pi = QuizIntentBuilder.createPendingIntentForDummy(ctx);
                 rview.setOnClickPendingIntent(RIDAnswer[i], pi);
             }
-            rview.setTextViewText(RIDAnswer[i], question.getAnswers()[i]);
-            if (selected == i) {
+            rview.setTextViewText(RIDAnswer[i], question.getAnswers()[p]);
+            if (selected == p) {
                 if (selected == correct) {
                     rview.setTextColor(RIDAnswer[i], Color.GREEN);
                 } else {
@@ -149,7 +165,7 @@ public class NotificationQuizService extends IntentService {
                 rview.setTextColor(RIDAnswer[i], color);
             }
 
-            if (i == correct) {
+            if (p == correct) {
                 rview.setViewVisibility(RIDImg[i], View.VISIBLE);
             } else {
                 rview.setViewVisibility(RIDImg[i], View.INVISIBLE);
@@ -168,7 +184,8 @@ public class NotificationQuizService extends IntentService {
         return rview;
     }
 
-    private void nextWidgetQuestion(Question question, PreviousQuestions previousQuestions) {
+    private void nextWidgetQuestion(Question question,
+                                    PreviousQuestions previousQuestions) {
         loadWidgets(question, -1, -1, previousQuestions);
     }
 }

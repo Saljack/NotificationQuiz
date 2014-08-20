@@ -11,5 +11,12 @@ package cz.saljack.notificationquiz;
  */
 public interface AnswerPermutation {
 
-    public  int[] getRandomPermutation();
+    /**
+     * 
+     * @param idPermutation modulo max permutatiation
+     * @return 
+     */
+    public int[] getRandomPermutation(int idPermutation);
+
+    public int[] getRandomPermutation();
 }

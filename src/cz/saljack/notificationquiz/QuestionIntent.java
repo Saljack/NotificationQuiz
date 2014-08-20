@@ -6,6 +6,7 @@
 package cz.saljack.notificationquiz;
 
 import android.content.Intent;
+import android.util.Log;
 import cz.saljack.notificationquiz.model.PreviousQuestions;
 
 /**
@@ -13,6 +14,8 @@ import cz.saljack.notificationquiz.model.PreviousQuestions;
  * @author saljack
  */
 public class QuestionIntent {
+    
+    public final static String TAG = "QuestionIntent";
 
     public final IntentType type;
     public final int questionID;
@@ -36,6 +39,7 @@ public class QuestionIntent {
         answer = intent.getIntExtra(Constants.ANSWER, -1);
         
         previous = intent.getParcelableExtra(Constants.PREVIOUS);
+        
         existNotification = intent.getBooleanExtra(Constants.EXIST_NOTIFICATION, false);
         permutation = intent.getIntArrayExtra(Constants.PERMUTATION);
     }
