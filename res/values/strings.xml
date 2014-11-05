@@ -2,6 +2,13 @@
 <resources>
     <string name="app_name">Notification Quiz</string>
     <string name="show_notification">Show notfication quiz</string>
+    
+    <string name="game_modes">Game modes</string>
+    <string name="survival">Survival</string>
+    <string name="millionare">Millionaire</string>
+    <string name="levels">Levels</string>
+    <string name="freemode">Free mode</string>
+    
     <string name="next">Next</string>
     <string name="reload_question">Reload question</string>
     <string name="loading">Loading ...</string>

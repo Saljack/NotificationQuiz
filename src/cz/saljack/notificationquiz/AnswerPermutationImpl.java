@@ -5,6 +5,7 @@
  */
 package cz.saljack.notificationquiz;
 
+import android.util.Log;
 import java.util.Random;
 
 /**
@@ -13,11 +14,14 @@ import java.util.Random;
  */
 public class AnswerPermutationImpl implements AnswerPermutation {
 
+    private static final String TAG = "AnswerPermutationImpl";
+
     private static final int[][] permutation = {{0, 1, 2}, {0, 2, 1}, {1, 0, 2}, {1, 2, 0}, {2, 0, 1}, {2, 1, 0}};
 
     public int[] getRandomPermutation() {
         Random rnd = new Random();
         int nextInt = rnd.nextInt(permutation.length);
+        Log.d(TAG, "Next INT is: " + nextInt);
         return getRandomPermutation(nextInt);
     }
 

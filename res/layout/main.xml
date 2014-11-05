@@ -10,6 +10,46 @@
         android:text="@string/show_notification"
         android:onClick="makeNotification"
     />
+    
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/game_modes"
+    />
+    
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/survival"
+        android:onClick="survivalClicked"
+    />
+    
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/millionare"
+        android:onClick="millionaireClicked"
+    />
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/levels"
+        android:onClick="levelsClicked"
+    />
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/freemode"
+        android:onClick="freemodeClicked"
+    />
+    <View 
+        android:layout_width="fill_parent"
+        android:layout_height="20dp"
+    />
+    
+    
+    
+    
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

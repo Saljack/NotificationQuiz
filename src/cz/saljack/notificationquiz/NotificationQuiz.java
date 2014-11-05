@@ -12,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import cz.saljack.notificationquiz.model.Game;
+import cz.saljack.notificationquiz.model.GameMode;
 import cz.saljack.notificationquiz.model.PreferencesDB;
 import cz.saljack.notificationquiz.settings.SettingsActivity;
 
@@ -56,6 +58,30 @@ public class NotificationQuiz extends Activity {
     }
 
     public void makeNotification(View view) {
+        PreferencesDB.setNotificationVisible(true, this);
+        Intent intent = QuizIntentBuilder.Builder(NotificationQuiz.this).makeNext().build();
+        startService(intent);
+    }
+
+    public void survivalClicked(View view) {
+        PreferencesDB.setNotificationVisible(true, this);
+        Intent intent = QuizIntentBuilder.Builder(NotificationQuiz.this).makeNext().setGame(new Game(GameMode.SURVIVAL)).build();
+        startService(intent);
+    }
+
+    public void millionaireClicked(View view) {
+        PreferencesDB.setNotificationVisible(true, this);
+        Intent intent = QuizIntentBuilder.Builder(NotificationQuiz.this).makeNext().build();
+        startService(intent);
+    }
+
+    public void levelsClicked(View view) {
+        PreferencesDB.setNotificationVisible(true, this);
+        Intent intent = QuizIntentBuilder.Builder(NotificationQuiz.this).makeNext().build();
+        startService(intent);
+    }
+
+    public void freemodeClicked(View view) {
         PreferencesDB.setNotificationVisible(true, this);
         Intent intent = QuizIntentBuilder.Builder(NotificationQuiz.this).makeNext().build();
         startService(intent);

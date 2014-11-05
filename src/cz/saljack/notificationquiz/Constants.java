@@ -22,6 +22,8 @@ public class Constants {
     public static final String PREVIOUS = "PREVIOUS";
     public static final String EXIST_NOTIFICATION = "EXIST_NOTIFICATION";
     public static final String PERMUTATION = "PERMUTATION";
+    public static final String GAME = "GAME";
+    
 
     public static final int NOTIFICATION_ID = 1;
 

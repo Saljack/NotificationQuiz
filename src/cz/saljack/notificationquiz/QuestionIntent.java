@@ -6,7 +6,8 @@
 package cz.saljack.notificationquiz;
 
 import android.content.Intent;
-import android.util.Log;
+import android.os.Bundle;
+import cz.saljack.notificationquiz.model.Game;
 import cz.saljack.notificationquiz.model.PreviousQuestions;
 
 /**
@@ -15,7 +16,7 @@ import cz.saljack.notificationquiz.model.PreviousQuestions;
  */
 public class QuestionIntent {
     
-    public final static String TAG = "QuestionIntent";
+    public final static String TAG = QuestionIntent.class.getName();
 
     public final IntentType type;
     public final int questionID;
@@ -23,6 +24,7 @@ public class QuestionIntent {
     public final PreviousQuestions previous;
     public final boolean existNotification;
     public final int[] permutation;
+    public final Game game;
 
     public QuestionIntent(Intent intent) {
         if (intent.getBooleanExtra(Constants.NEXT, false)) {
@@ -42,6 +44,9 @@ public class QuestionIntent {
         
         existNotification = intent.getBooleanExtra(Constants.EXIST_NOTIFICATION, false);
         permutation = intent.getIntArrayExtra(Constants.PERMUTATION);
+        
+        Bundle bundleGame = intent.getBundleExtra(Constants.GAME);
+        game = Game.fromBundle(bundleGame);
     }
 
     public enum IntentType {

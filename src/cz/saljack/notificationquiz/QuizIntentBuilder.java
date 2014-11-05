@@ -8,6 +8,7 @@ package cz.saljack.notificationquiz;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import cz.saljack.notificationquiz.model.Game;
 import cz.saljack.notificationquiz.model.PreviousQuestions;
 
 /**
@@ -150,6 +151,11 @@ public class QuizIntentBuilder {
 
     public QuizIntentBuilder setPermuation(int[] permutation) {
         intent.putExtra(Constants.PERMUTATION, permutation);
+        return this;
+    }
+
+    public QuizIntentBuilder setGame(Game game) {
+        intent.putExtra(Constants.GAME, game.toBundle());
         return this;
     }
 }

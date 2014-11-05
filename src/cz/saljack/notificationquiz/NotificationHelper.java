@@ -27,13 +27,14 @@ public class NotificationHelper {
 
     public static void makeOrUpdateNotification(Context ctx, Question question,
                                                 PreviousQuestions previousQuestions) {
-        makeOrUpdateNotification(ctx, question, -1, -1, previousQuestions);
+        makeOrUpdateNotification(ctx, question, -1, -1, previousQuestions, false);
     }
 
     public static void makeOrUpdateNotification(Context ctx, Question question,
                                                 int selected, int correct,
-                                                PreviousQuestions previousQuestions) {
-        RemoteViews rview = makeRemoteViews(ctx, question, selected, correct, previousQuestions);
+                                                PreviousQuestions previousQuestions,
+                                                boolean showCorrect) {
+        RemoteViews rview = makeRemoteViews(ctx, question, selected, correct, previousQuestions, showCorrect);
         Notification.Builder notBuilder = new Notification.Builder(ctx).setContent(rview).setSmallIcon(R.drawable.ic_launcher);
         Notification not = notBuilder.build();
         not.bigContentView = rview;
@@ -45,53 +46,14 @@ public class NotificationHelper {
 
     public static RemoteViews makeRemoteViews(Context ctx, Question question,
                                               int selected, int correct,
-                                              PreviousQuestions previousQuestions) {
+                                              PreviousQuestions previousQuestions,
+                                              boolean showCorrect) {
         RemoteViews rview = new RemoteViews(ctx.getPackageName(), R.layout.notification_layout);
-        rview.setTextViewText(R.id.question, question.getQuestion());
 
         int RIDAnswer[] = {R.id.answerA, R.id.answerB, R.id.answerC};
         int RIDImg[] = {R.id.imgA, R.id.imgB, R.id.imgC};
-
-        int color = ctx.getResources().getColor(android.R.color.primary_text_dark);
-
-        for (int i = 0; i < RIDAnswer.length; i++) {
-            final int p = question.getPermutation()[i];
-            if (selected == -1) {
-                PendingIntent penIntentService = QuizIntentBuilder.createPendingIntentForAnswer(
-                        question.getId(), 
-                        AnswerEnum.values[p], 
-                        previousQuestions, 
-                        question.getPermutation(), 
-                        ctx);
-                rview.setOnClickPendingIntent(RIDAnswer[i], penIntentService);
-            } else {
-                PendingIntent pi = QuizIntentBuilder.createPendingIntentForDummy(ctx);
-                rview.setOnClickPendingIntent(RIDAnswer[i], pi);
-            }
-            rview.setTextViewText(RIDAnswer[i], question.getAnswers()[p]);
-            if (selected == p) {
-                if (selected == correct) {
-                    rview.setTextColor(RIDAnswer[i], Color.GREEN);
-                } else {
-                    rview.setTextColor(RIDAnswer[i], Color.RED);
-                }
-            } else {
-                rview.setTextColor(RIDAnswer[i], color);
-            }
-
-            if (correct == p) {
-                rview.setViewVisibility(RIDImg[i], View.VISIBLE);
-            } else {
-                rview.setViewVisibility(RIDImg[i], View.INVISIBLE);
-            }
-        }
-
-        if (selected >= 0) {
-            rview.setViewVisibility(R.id.next, View.VISIBLE);
-            rview.setOnClickPendingIntent(R.id.next, QuizIntentBuilder.createPendingIntentForNext(question.getId(), previousQuestions, ctx));
-        } else {
-            rview.setViewVisibility(R.id.next, View.GONE);
-        }
+        
+        ViewHelper.fillView(rview, RIDAnswer, RIDImg, R.id.question, R.id.next, question, selected, correct, previousQuestions, showCorrect, ctx);
 
         rview.setOnClickPendingIntent(R.id.close, QuizIntentBuilder.createPendingIntentForClose(ctx));
 

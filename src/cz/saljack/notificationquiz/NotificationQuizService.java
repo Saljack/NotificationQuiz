@@ -14,7 +14,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import static android.content.Context.NOTIFICATION_SERVICE;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -85,10 +87,13 @@ public class NotificationQuizService extends IntentService {
                         preva = questionIntent.previous;
                     }
 
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                    boolean showCorrect = sharedPref.getBoolean("show_correct", true);
+
                     if (PreferencesDB.isNotificationVisible(this)) {
-                        answerEvaluationNotification(questiona, questionIntent.answer, preva);
+                        answerEvaluationNotification(questiona, questionIntent.answer, preva, showCorrect);
                     }
-                    answerEvaluationWidgets(questiona, questionIntent.answer, preva);
+                    answerEvaluationWidgets(questiona, questionIntent.answer, preva, showCorrect);
 
                     dba.close();
                     break;
@@ -106,86 +111,46 @@ public class NotificationQuizService extends IntentService {
     }
 
     public void answerEvaluationNotification(Question question, int answer,
-                                             PreviousQuestions previousQuestions) throws IOException {
-        NotificationHelper.makeOrUpdateNotification(this, question, answer, question.getCorrect(), previousQuestions);
+                                             PreviousQuestions previousQuestions,
+                                             boolean showCorrect) throws IOException {
+        NotificationHelper.makeOrUpdateNotification(this, question, answer, question.getCorrect(), previousQuestions, showCorrect);
     }
 
     public void answerEvaluationWidgets(Question question, int answer,
-                                        PreviousQuestions previousQuestions) throws IOException {
-        loadWidgets(question, answer, question.getCorrect(), previousQuestions);
+                                        PreviousQuestions previousQuestions,
+                                        boolean showCorrect) throws IOException {
+        loadWidgets(question, answer, question.getCorrect(), previousQuestions, showCorrect);
     }
 
     public void loadWidgets(Question question, int selected, int correct,
-                            PreviousQuestions previousQuestions) {
+                            PreviousQuestions previousQuestions,
+                            boolean showCorrect) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
         ComponentName name = new ComponentName(this, WidgetProvider.class);
         int[] widgetsIDs = appWidgetManager.getAppWidgetIds(name);
-        RemoteViews remoteView = makeRemoteViewsForWidget(this, question, selected, correct, previousQuestions);
+        RemoteViews remoteView = makeRemoteViewsForWidget(this, question, selected, correct, previousQuestions, showCorrect);
         appWidgetManager.updateAppWidget(name, remoteView);
     }
 
     public static RemoteViews makeRemoteViewsForWidget(Context ctx,
                                                        Question question,
                                                        int selected, int correct,
-                                                       PreviousQuestions previousQuestions) {
+                                                       PreviousQuestions previousQuestions,
+                                                       boolean showCorrect) {
 
         RemoteViews rview = new RemoteViews(ctx.getPackageName(), R.layout.widget_layout);
-        rview.setTextViewText(R.id.questionW, question.getQuestion());
 
         int RIDAnswer[] = {R.id.answerAW, R.id.answerBW, R.id.answerCW};
         int RIDImg[] = {R.id.imgAW, R.id.imgBW, R.id.imgCW};
-
-        int color = ctx.getResources().getColor(android.R.color.primary_text_dark);
-
-        for (int i = 0; i < RIDAnswer.length; i++) {
-            final int p = question.getPermutation()[i];
-            if (selected == -1) {
-                PendingIntent penIntentService = QuizIntentBuilder.createPendingIntentForAnswer(
-                        question.getId(),
-                        AnswerEnum.values[p],
-                        previousQuestions,
-                        question.getPermutation(),
-                        ctx
-                );
-
-                rview.setOnClickPendingIntent(RIDAnswer[i], penIntentService);
-            } else {
-                PendingIntent pi = QuizIntentBuilder.createPendingIntentForDummy(ctx);
-                rview.setOnClickPendingIntent(RIDAnswer[i], pi);
-            }
-            rview.setTextViewText(RIDAnswer[i], question.getAnswers()[p]);
-            if (selected == p) {
-                if (selected == correct) {
-                    rview.setTextColor(RIDAnswer[i], Color.GREEN);
-                } else {
-                    rview.setTextColor(RIDAnswer[i], Color.RED);
-                }
-            } else {
-                rview.setTextColor(RIDAnswer[i], color);
-            }
-
-            if (p == correct) {
-                rview.setViewVisibility(RIDImg[i], View.VISIBLE);
-            } else {
-                rview.setViewVisibility(RIDImg[i], View.INVISIBLE);
-            }
-        }
-
-        if (selected >= 0) {
-            rview.setViewVisibility(R.id.nextW, View.VISIBLE);
-            rview.setOnClickPendingIntent(R.id.nextW, QuizIntentBuilder.createPendingIntentForNext(question.getId(), previousQuestions, ctx));
-        } else {
-            rview.setViewVisibility(R.id.nextW, View.GONE);
-        }
-
-        rview.setOnClickPendingIntent(R.id.close, QuizIntentBuilder.createPendingIntentForClose(ctx));
+        
+        ViewHelper.fillView(rview, RIDAnswer, RIDImg, R.id.question, R.id.next, question, selected, correct, previousQuestions, showCorrect, ctx);
 
         return rview;
     }
 
     private void nextWidgetQuestion(Question question,
                                     PreviousQuestions previousQuestions) {
-        loadWidgets(question, -1, -1, previousQuestions);
+        loadWidgets(question, -1, -1, previousQuestions, true);
     }
 }
